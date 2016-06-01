@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ConvertFRBtoABS.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SourcePath" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\</Value>
+    </Setting>
+    <Setting Name="SourceMask" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">*.dbf</Value>
+    </Setting>
+    <Setting Name="LogFile" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\scan.log</Value>
+    </Setting>
+    <Setting Name="FileInversionMO" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\mo.inv</Value>
+    </Setting>
+    <Setting Name="FileInversionOut" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\out.inv</Value>
+    </Setting>
+    <Setting Name="InversionFormat" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">  {0,-15} {1}</Value>
+    </Setting>
+    <Setting Name="REGEXP_VO" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\{VO\d{5}(PS\d{8}/3194/0000/\d/0|)\}~требуется паспорт сделки по шаблону {VO...}</Value>
+    </Setting>
+    <Setting Name="REGEXP_VO_SCAN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^[\{\[\(]V[OО0]\d{5}([PР]S\d{8}/3194/0000/\d/0|)[\}\]\)]</Value>
+    </Setting>
+    <Setting Name="REGEXP_LS_VO" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(30122|30123|30230|30231|40807|40813|40814|40815|40818|40819|40820)</Value>
+    </Setting>
+    <Setting Name="REGEXP_INN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{10}|\d{12}|0)$~не 10 или 12 цифр, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_INN10" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{10}|0)$~не 10 цифр или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_INN12" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{12}|0)$~не 12 цифр или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_LS_INN12" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(40802|40817)</Value>
+    </Setting>
+    <Setting Name="REGEXP_KPP" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{9}|0)$~не 9 цифр или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_BIC" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^04\d{7}$~не 9 цифр с 04 в начале</Value>
+    </Setting>
+    <Setting Name="REGEXP_LS" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\d{5}810\d{12}$~не рублевый счет из 20 цифр</Value>
+    </Setting>
+    <Setting Name="REGEXP_SS" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\d{2}$~не 2 цифры</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL1" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\d{20}$~не 20 цифр</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL2" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{8}|\d{11})$~не 8 или 11 цифр</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL3" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(ТП|ЗД|БФ|ТР|РС|ОТ|РТ|ВУ|ПР|АП|АР|ДЕ|ПО|КВ|КТ|ИД|ИП|ТУ|БД|ИН|КП|ДК|ПК|КК|ТК|0)$~не входит в перечень, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL4" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^((((Д1|Д2|Д3|МС|[0-3]\d{1})\.(0[1-9]|1[0-2]))|((КВ\.0[1-4]|ПЛ\.0[1-2]|ГД\.00)))\.201\d{1}|0)$~не входит в перечень или не дата, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL5" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^.{1,15}$~не от 1 до 15 знаков, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL6" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^([0-3]\d{1}\.(0[1-9]|1[0-2])\.201\d{1}|0)$~не дата или 0</Value>
+    </Setting>
+    <Setting Name="FileInversionLoc" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\out_int.inv</Value>
+    </Setting>
+    <Setting Name="REGEXP_QUE" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^[1-5]$~не 1..5</Value>
+    </Setting>
+    <Setting Name="REGEXP_UIN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{20}|\d{25}|0)$~не 20 или 25 цифр, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_N" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\d{1,6}$~не число до 6 цифр</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
