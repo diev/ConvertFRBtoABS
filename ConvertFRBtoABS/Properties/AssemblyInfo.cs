@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ConvertFRBtoABS")]
 [assembly: AssemblyDescription("Конвертирование из FineReader BANK в АБС Инверсия")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("АО Сити Инвест Банк")]
+[assembly: AssemblyCompany("AO City Invest Bank")]
 [assembly: AssemblyProduct("ConvertFRBtoABS")]
-[assembly: AssemblyCopyright("Copyright © 2013-2016")]
+[assembly: AssemblyCopyright("Copyright © 2013-2017 Dmitrii Evdokimov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.2.60601")]
-[assembly: AssemblyFileVersion("6.0.2.60601")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
