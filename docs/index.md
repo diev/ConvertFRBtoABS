@@ -11,7 +11,7 @@
 
 Licensed under the [Apache License, Version 2.0].
 
-[Apache License, Version 2.0] http://www.apache.org/licenses/LICENSE-2.0 "LICENSE"
+[Apache License, Version 2.0]: http://www.apache.org/licenses/LICENSE-2.0 "LICENSE"
 
 [appveyor]: https://ci.appveyor.com/project/diev/convertfrbtoabs
 [releases]: https://github.com/diev/ConvertFRBtoABS/releases/latest

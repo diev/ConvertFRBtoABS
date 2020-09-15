@@ -1,4 +1,5 @@
 version: '{build}'
+image: Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -45,24 +46,25 @@ install:
 
     Write-Host "Building v$env:APPVEYOR_BUILD_VERSION dated $env:BuildDate"
 build:
+  project: $(appveyor_project_name).sln
   verbosity: minimal
 before_package:
 - cmd: >-
     copy bin\%CONFIGURATION%\%APPVEYOR_PROJECT_NAME%.exe*
 
-    echo %SITE% >>readme.txt
+    echo %SITE%>>readme.txt
 
-    echo [InternetShortcut] >readme.url
+    echo [InternetShortcut]>readme.url
 
-    echo URL=%SITE% >>readme.url
+    echo URL=%SITE%>>readme.url
 
-    echo %APPVEYOR_PROJECT_NAME%.exe >>Package
+    echo %APPVEYOR_PROJECT_NAME%.exe>>Package
 
-    echo %APPVEYOR_PROJECT_NAME%.exe.config >>Package
+    echo %APPVEYOR_PROJECT_NAME%.exe.config>>Package
 
-    echo %APPVEYOR_PROJECT_NAME% v%APPVEYOR_BUILD_VERSION% (%BUILDDATE%) >readme.txt
+    echo %APPVEYOR_PROJECT_NAME% v%APPVEYOR_BUILD_VERSION% (%BUILDDATE%)>readme.txt
 
-    echo http://%APPVEYOR_ACCOUNT_NAME%.github.io/%APPVEYOR_PROJECT_NAME% >>readme.txt
+    echo http://%APPVEYOR_ACCOUNT_NAME%.github.io/%APPVEYOR_PROJECT_NAME%>>readme.txt
 after_build:
 - cmd: 7z a %APPVEYOR_PROJECT_NAME%-v%APPVEYOR_BUILD_VERSION%.zip @Package readme.txt readme.url
 artifacts:
