@@ -21,32 +21,40 @@ assembly_info:
   assembly_informational_version: '{version}'
 install:
 - ps: >-
-    $AssemblyFile = "$env:APPVEYOR_PROJECT_NAME\Properties\AssemblyInfo.cs"
+    $AssemblyFile = "Properties\AssemblyInfo.cs"
 
-    $RegularExpression = [regex] '^\[assembly: AssemblyFileVersion\(\"(\d*\.\d*)\.\d*\.\d*\"\)\]$'
+    $RegularExpression = [regex] '^\[assembly: AssemblyFileVersion\(\"(\d*\.\d*\.\d*)\.\d*\"\)\]$'
 
     $FileContent = Get-Content $AssemblyFile
 
     foreach($content in $FileContent) {
       $match = [System.Text.RegularExpressions.Regex]::Match($content, $RegularExpression)
       if($match.Success) {
-        $ver = $match.groups[1].value
+        $env:VERSION = $match.groups[1].value
         break;
       }
     }
 
-    Update-AppveyorBuild -Version ("{0}.{1}" -f $ver, $env:APPVEYOR_BUILD_NUMBER)
+    Update-AppveyorBuild -Version ("{0}.{1}" -f $env:VERSION, $env:APPVEYOR_BUILD_NUMBER)
 
     $CommitDateTime = [datetime]::Parse($env:APPVEYOR_REPO_COMMIT_TIMESTAMP)
 
-    $env:BuildDate = $CommitDateTime.ToString('dd.MM.yyyy')
+    $env:BuildDate = $CommitDateTime.ToString('yyyy-MM-dd')
+
+    $env:Site = "http://{0}.github.io/{1}" -f $env:APPVEYOR_ACCOUNT_NAME, $env:APPVEYOR_PROJECT_NAME
 
     Write-Host "Building v$env:APPVEYOR_BUILD_VERSION dated $env:BuildDate"
 build:
   verbosity: minimal
 before_package:
 - cmd: >-
-    copy %APPVEYOR_PROJECT_NAME%\bin\%CONFIGURATION%\%APPVEYOR_PROJECT_NAME%.exe*
+    copy bin\%CONFIGURATION%\%APPVEYOR_PROJECT_NAME%.exe*
+
+    echo %SITE% >>readme.txt
+
+    echo [InternetShortcut] >readme.url
+
+    echo URL=%SITE% >>readme.url
 
     echo %APPVEYOR_PROJECT_NAME%.exe >>Package
 
@@ -56,7 +64,7 @@ before_package:
 
     echo http://%APPVEYOR_ACCOUNT_NAME%.github.io/%APPVEYOR_PROJECT_NAME% >>readme.txt
 after_build:
-- cmd: 7z a %APPVEYOR_PROJECT_NAME%-v%APPVEYOR_BUILD_VERSION%.zip @Package readme.txt
+- cmd: 7z a %APPVEYOR_PROJECT_NAME%-v%APPVEYOR_BUILD_VERSION%.zip @Package readme.txt readme.url
 artifacts:
 - path: $(appveyor_project_name)-v$(appveyor_build_version).zip
   name: AppZip
@@ -64,7 +72,7 @@ deploy:
 - provider: GitHub
   tag: v$(appveyor_build_version)
   release: $(appveyor_project_name) v$(appveyor_build_version)
-  description: '* $(appveyor_repo_commit_message)\n\nBuild #$(appveyor_build_number) by AppVeyor $(BuildDate)\nSee docs on http://$(appveyor_account_name).github.io/$(appveyor_project_name)'
+  description: '* $(appveyor_repo_commit_message)\n\nBuild #$(appveyor_build_number) by AppVeyor $(BuildDate)\nSee docs on $(Site)'
   auth_token:
     secure: CePfctnBFd3iDwgVWlGOD6mfxQZrNBHK7IpsCK/deo2vHxA3lTr2nRnhbqpKqchQ
   artifact: AppZip
@@ -76,4 +84,5 @@ deploy:
 
 only_commits:
   files:
-    - ConvertFRBtoABS\
+    - '*.cs'
+    - '*.yml'
