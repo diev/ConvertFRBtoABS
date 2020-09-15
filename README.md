@@ -7,6 +7,8 @@
 в формате DBF в формат импорта АБС *Инверсия XXI Век* с попутной коррекцией 
 неправильно распознанного.
 
+[![Рабочее окно приложения]]
+
 ## License
 
 Licensed under the [Apache License, Version 2.0].
@@ -19,3 +21,5 @@ Licensed under the [Apache License, Version 2.0].
 
 [Build status]: https://ci.appveyor.com/api/projects/status/tjajducaps0g7wsd?svg=true
 [GitHub Release]: https://img.shields.io/github/release/diev/ConvertFRBtoABS.svg
+
+[Рабочее окно приложения]: docs/assets/images/plategka.gif
