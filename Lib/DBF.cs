@@ -1,17 +1,37 @@
-﻿using System;
+﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+using System;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ConvertFRBtoABS
+namespace Lib
 {
+    /// <summary>
+    /// DBF class contains methods to handle DBF files.
+    /// </summary>
+    /// <remarks>
+    /// Code is based on http://nansoft.ru/blog/csharp/30.html
+    /// </remarks>
+    /// <example>
+    /// This sample shows how to read datarows and process them.
+    /// <code>
+    ///     DataTable DBFTable = new DataTable();
+    ///     ReadDBF(filename, DBFTable);
+    ///     foreach (DataRow Rec in DBFTable.Rows) {}
+    /// </code>
+    /// </example>
     class DBF
     {
+        /// <summary>
+        /// Read DBF file.
+        /// </summary>
+        /// <param name="filename">DBF file name to read.</param>
+        /// <param name="table">Table to store data.</param>
         public static void ReadDBF(string filename, DataTable table)
         {
-            // http://nansoft.ru/blog/csharp/30.html
-
             using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
             {
                 byte[] buffer = new byte[4]; // Кол-во записей: 4 байтa, начиная с 5-го
@@ -40,6 +60,14 @@ namespace ConvertFRBtoABS
                 fs.Read(buffer, 0, buffer.Length);
                 int FieldsLength = 0;
 
+                // Типы полей DBF
+                Type typeC = Type.GetType("System.String");
+                Type typeL = Type.GetType("System.Boolean");
+                Type typeD = Type.GetType("System.DateTime");
+                Type typeN0 = Type.GetType("System.Int32");
+                Type typeN = Type.GetType("System.Decimal");
+                Type typeF = Type.GetType("System.Double");
+
                 for (int col = 0; col < FieldCount; col++)
                 {
                     // Заголовки
@@ -49,42 +77,37 @@ namespace ConvertFRBtoABS
                     FieldType[col] = "" + (char)buffer[col * 32 + 11];
                     FieldSize[col] = buffer[col * 32 + 16];
                     FieldDigs[col] = buffer[col * 32 + 17];
-                    FieldsLength = FieldsLength + FieldSize[col];
+
+                    FieldsLength += FieldSize[col];
 
                     // Создаю колонки
+                    Type type;
                     switch (FieldType[col])
                     {
                         case "C":
-                            table.Columns.Add(FieldName[col], Type.GetType("System.String"));
+                            type = typeC;
                             break;
 
                         case "L":
-                            table.Columns.Add(FieldName[col], Type.GetType("System.Boolean"));
+                            type = typeL;
                             break;
 
                         case "D":
-                            table.Columns.Add(FieldName[col], Type.GetType("System.DateTime"));
+                            type = typeD;
                             break;
 
                         case "N":
-                            if (FieldDigs[col] == 0)
-                            {
-                                table.Columns.Add(FieldName[col], Type.GetType("System.Int32"));
-                            }
-                            else
-                            {
-                                table.Columns.Add(FieldName[col], Type.GetType("System.Decimal"));
-                            }
+                            type = FieldDigs[col] == 0 ? typeN0 : typeN;
                             break;
 
                         case "F":
-                            table.Columns.Add(FieldName[col], Type.GetType("System.Double"));
+                            type = typeF;
                             break;
 
                         default:
-                            //GTable.Columns.Add(FieldName[col], Type.GetType("System.String"));//////////////////?!!!
-                            break;
+                            throw new Exception("Неизвестный тип поля DBF");
                     }
+                    table.Columns.Add(FieldName[col], type);
                 }
                 fs.ReadByte(); // Пропускаю разделитель схемы и данных
 
@@ -103,15 +126,19 @@ namespace ConvertFRBtoABS
 
                     for (int col = 0; col < FieldCount; col++)
                     {
-                        //string value = Encoding.GetEncoding(Encoding.UTF8.HeaderName).GetString(buffer, Index, FieldSize[i]).TrimEnd(new char[] { (char)0x00 }).TrimEnd(new char[] { (char)0x20 });
                         string value = Encoding.GetEncoding(866)
                             .GetString(buffer, Index, FieldSize[col])
                             .TrimEnd(new char[] { (char)0x00 })
                             .TrimEnd(new char[] { (char)0x20 });
+
                         Index += FieldSize[col];
 
-                        if (!string.IsNullOrEmpty(value))
+                        if (string.IsNullOrEmpty(value))
                         {
+                            R[col] = DBNull.Value;
+                        }
+                        else
+                        { 
                             switch (FieldType[col])
                             {
                                 case "L":
@@ -141,10 +168,6 @@ namespace ConvertFRBtoABS
                                     R[col] = value;
                                     break;
                             }
-                        }
-                        else
-                        {
-                            R[col] = DBNull.Value;
                         }
                     }
                     table.Rows.Add(R);

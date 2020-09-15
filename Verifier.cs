@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -10,8 +13,8 @@ namespace ConvertFRBtoABS
     {
         private const int CutLength = 20;
 
-        private string prompt;
-        private string part;
+        private readonly string prompt;
+        private readonly string part;
 
         public bool Changed = false;
 
@@ -33,7 +36,7 @@ namespace ConvertFRBtoABS
             string ask = string.Format("{0} {1}", part, msg);
             string log = string.Format("{0} \"{1}\" - {2}", part, sfield, msg);
 
-            if (InputBox.Query(prompt, ask, ref field))
+            if (Lib.InputBox.Query(prompt, ask, ref field))
             {
                 if (field.Equals(field0))
                 {
@@ -87,11 +90,13 @@ namespace ConvertFRBtoABS
                 regexp = parts[0];
                 msg = parts[1];
             }
+
             Regex regex = new Regex(regexp);
             while (!regex.IsMatch(field))
             {
                 Problem(ref field, msg);
             }
+
             return Changed;
         }
 
@@ -104,6 +109,7 @@ namespace ConvertFRBtoABS
                     Problem(ref field, string.Format("короче {0} символов", min));
                 }
             }
+
             if (max > 0)
             {
                 while (field.Length > max)
@@ -111,22 +117,27 @@ namespace ConvertFRBtoABS
                     Problem(ref field, string.Format("длиннее {0} символов", max));
                 }
             }
+
             //while (field.Contains("^"))
             //{ 
             //    Problem(doc, part, ref field, "содержит ^");
             //}
+
             while (field.Contains("..."))
             {
                 Problem(ref field, "содержит многоточие");
             }
+
             //while (field.StartsWith("\""))
             //{
             //    Problem(doc, part, ref field, "кавычка в начале");
             //}
+
             while (field.StartsWith("-"))
             {
                 Problem(ref field, "прочерк в начале");
             }
+
             return Changed;
         }
 
@@ -134,10 +145,12 @@ namespace ConvertFRBtoABS
         {
             DateTimeFormatInfo dfi = new CultureInfo("ru-RU", false).DateTimeFormat;
             DateTime d;
+
             while (!DateTime.TryParseExact(field, "dd.MM.yyyy", dfi, DateTimeStyles.None, out d))
             {
                 Problem(ref field, "не дата");
             }
+
             if (before != 0)
             {
                 while (DateTime.Compare(d, d.AddDays(-before)) < 0)
@@ -145,6 +158,7 @@ namespace ConvertFRBtoABS
                     Problem(ref field, string.Format("старее {0} дней", before));
                 }
             }
+
             if (after != 0)
             {
                 while (DateTime.Compare(d, d.AddDays(after)) > 0)
@@ -152,54 +166,65 @@ namespace ConvertFRBtoABS
                     Problem(ref field, string.Format("позднее {0} дней", after));
                 }
             }
+
             return Changed;
         }
 
         public bool INN(ref string field, string LS)
         {
             ProbEx(ref field, Properties.Settings.Default.REGEXP_INN);
+
             //while (!ValidINNKey(field)) //////////////////////////////////
             //{
             //    Problem(ref field, "неправильный");
             //}
+
             while (LS.StartsWith("40") && field.Equals(Program.OurINN))
             {
                 Problem(ref field, "это ИНН Банка");
             }
+
             while (field.StartsWith("00"))
             {
                 Problem(ref field, "не должен начинаться с 00");
             }
+
             return Changed;
         }
 
         public bool KPP(ref string field)
         {
             ProbEx(ref field, Properties.Settings.Default.REGEXP_KPP);
+
             while (field.StartsWith("00"))
             {
                 Problem(ref field, "не должен начинаться с 00");
             }
+
             return Changed;
         }
 
         public bool LS(ref string ls, string bic, string ks)
         {
             ProbEx(ref ls, Properties.Settings.Default.REGEXP_LS);
+
             while (!LSKey(ls, bic, ks))
             {
                 Problem(ref ls, "не ключуется");
             }
+
             return Changed;
         }
 
         private bool LSKey(string ls, string bic, string ks)
         {
             string bic3 = bic.Substring(bic.Length - 3); //КО
+
             if (string.IsNullOrEmpty(ks))
             {
                 bic3 = "0" + bic.Substring(bic.Length - 5, 2); //РКЦ
             }
+
             string conto = ls.Substring(0, 8); //40702810*00000000123
             string ls11 = ls.Substring(9);
 

@@ -1,17 +1,20 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
 [assembly: AssemblyTitle("ConvertFRBtoABS")]
-[assembly: AssemblyDescription("Конвертирование из FineReader BANK в АБС Инверсия")]
+[assembly: AssemblyDescription("Конвертирование из ABBYY FineReader BANK в ЦАБС XXI век Инверсии")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("AO City Invest Bank")]
+[assembly: AssemblyCompany("Cibank")]
 [assembly: AssemblyProduct("ConvertFRBtoABS")]
-[assembly: AssemblyCopyright("Copyright © 2013-2017 Dmitrii Evdokimov")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © 2013-2020 Dmitrii Evdokimov")]
+[assembly: AssemblyTrademark("Дмитрий Евдокимов")]
 [assembly: AssemblyCulture("")]
 
 // Параметр ComVisible со значением FALSE делает типы в сборке невидимыми 
@@ -32,5 +35,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: NeutralResourcesLanguage("ru")]

@@ -80,8 +80,11 @@
     <Setting Name="REGEXP_UIN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^(\d{20}|\d{25}|0)$~не 20 или 25 цифр, или 0</Value>
     </Setting>
-    <Setting Name="REGEXP_N" Type="System.String" Scope="Application">
+    <Setting Name="REGEXP_N" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^\d{1,6}$~не число до 6 цифр</Value>
+    </Setting>
+    <Setting Name="REGEXP_PURPOSCODE" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\(|1|2|3)$~не число 1, 2, 3 или пусто</Value>
     </Setting>
   </Settings>
 </SettingsFile>

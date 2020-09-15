@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+using System;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -32,14 +35,17 @@ namespace ConvertFRBtoABS
         static void Main(string[] args)
         {
             int cnt = 0;
+
             foreach (string filename in Directory.GetFiles(SourcePath, SourceMask))
             {
                 if (AbortDoc)
                 {
-                    DialogResult result = MessageBox.Show("Вы хотите завершить работу?\n\n" +
+                    DialogResult result = MessageBox.Show(
+                        "Вы хотите завершить работу?\n\n" +
                         "Да - выйти из программы;\n" +
                         "Нет - продолжить проверку.",
-                        "Вы отказались от исправления", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                        "Вы отказались от исправления", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
                     if (result == DialogResult.Yes)
                     {
@@ -54,7 +60,8 @@ namespace ConvertFRBtoABS
                 DataTable DBFTable = new DataTable();
 
                 Console.WriteLine("Reading {0}", filename);
-                DBF.ReadDBF(filename, DBFTable);
+                Lib.DBF.ReadDBF(filename, DBFTable);
+
                 foreach (DataRow Rec in DBFTable.Rows)
                 {
                     #region Test
@@ -75,10 +82,12 @@ namespace ConvertFRBtoABS
 
                     if (AbortDoc)
                     {
-                        DialogResult result = MessageBox.Show("Вы хотите завершить проверку на этом?\n\n" +
+                        DialogResult result = MessageBox.Show(
+                            "Вы хотите завершить проверку на этом?\n\n" +
                             "Да - выкинуть целиком остаток пачки;\n" +
                             "Нет - продолжить проверку.",
-                            "Вы отказались от исправления", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                            "Вы отказались от исправления", 
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
                         if (result == DialogResult.Yes)
                         {
@@ -116,12 +125,13 @@ namespace ConvertFRBtoABS
                         //{
                         //    ver.Problem(ref test, "не число");
                         //}
+
                         if (ver.ProbEx(ref test, Properties.Settings.Default.REGEXP_N))
                         {
                             doc.DocNo = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -141,12 +151,13 @@ namespace ConvertFRBtoABS
                         {
                             doc.DocDate = test;
                         }
+
                         if (ver.Date(ref test))
                         {
                             doc.DocDate = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -161,17 +172,17 @@ namespace ConvertFRBtoABS
                         Verifier ver = new Verifier(prompt + "7", "Сумма");
                         string test = doc.Sum;
 
-                        decimal n;
-                        while (!Decimal.TryParse(test, NumberStyles.AllowDecimalPoint, nfi, out n))
+                        while (!decimal.TryParse(test, NumberStyles.AllowDecimalPoint, nfi, result: out decimal n))
                         {
                             ver.Problem(ref test, "не сумма");
                         }
+
                         if (ver.Changed)
                         {
                             doc.Sum = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -191,12 +202,13 @@ namespace ConvertFRBtoABS
                         //{
                         //    ver.Problem(ref test, "не число");
                         //}
+
                         if (ver.ProbEx(ref test, Properties.Settings.Default.REGEXP_QUE))
                         {
                             doc.Queue = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -216,7 +228,7 @@ namespace ConvertFRBtoABS
                             doc.INN = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -236,7 +248,7 @@ namespace ConvertFRBtoABS
                             doc.LS = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -256,7 +268,7 @@ namespace ConvertFRBtoABS
                             doc.INN2 = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -276,7 +288,7 @@ namespace ConvertFRBtoABS
                             doc.LS2 = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -316,7 +328,7 @@ namespace ConvertFRBtoABS
                             doc.Name2 = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -336,7 +348,27 @@ namespace ConvertFRBtoABS
                             doc.Details = test;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
+                    {
+                        if (AbortDoc)
+                        {
+                            continue;
+                        }
+                    }
+                    #endregion
+
+                    #region Rule20
+                    try //5286-У с 01.06.2020
+                    {
+                        Verifier ver = new Verifier(prompt + "20", "Наз. пл.");
+                        string test = doc.PurposCode;
+
+                        if (ver.ProbEx(ref test, Properties.Settings.Default.REGEXP_PURPOSCODE))
+                        {
+                            doc.PurposCode = test;
+                        }
+                    }
+                    catch (Exception)
                     {
                         if (AbortDoc)
                         {
@@ -358,7 +390,7 @@ namespace ConvertFRBtoABS
                                 doc.PayCode = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -378,7 +410,7 @@ namespace ConvertFRBtoABS
                                 doc.KPP = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -398,7 +430,7 @@ namespace ConvertFRBtoABS
                                 doc.KPP2 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -418,7 +450,7 @@ namespace ConvertFRBtoABS
                                 doc.PayCode = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -438,7 +470,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL1 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -458,7 +490,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL2 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -478,7 +510,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL3 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -498,7 +530,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL4 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -518,7 +550,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL5 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -538,7 +570,7 @@ namespace ConvertFRBtoABS
                                 doc.NAL6 = test;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             if (AbortDoc)
                             {
@@ -565,12 +597,15 @@ namespace ConvertFRBtoABS
                 //string bak = Path.Combine(SourcePath, string.Format(@"BAK\{0:yyyy}\{0:MM}\{0:dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
                 string bak = Path.Combine(SourcePath, string.Format(@"BAK\{0:yyyy-MM-dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
                 string path = Path.GetDirectoryName(bak);
+
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
+
                 File.Move(filename, bak);
                 string msg;
+
                 if (File.Exists(bak))
                 {
                     msg = filename + string.Format(" {0} ok\n", DBFTable.Rows.Count);
@@ -579,9 +614,11 @@ namespace ConvertFRBtoABS
                 {
                     msg = filename + " не создать\n";
                 }
+
                 File.AppendAllText(LogFile, msg, FileEnc);
                 Console.WriteLine();
             }
+
             Console.WriteLine("Press Enter");
             Console.ReadLine();
 

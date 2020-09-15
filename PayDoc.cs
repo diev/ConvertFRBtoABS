@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
 using System.Data;
 using System.Text;
 
@@ -8,61 +10,96 @@ namespace ConvertFRBtoABS
     {
         public string DocNo
         { get; set; } = string.Empty;
+
         public string DocDate
         { get; set; } = string.Empty;
+
+        public string ValDate //v1.2
+        { get; set; } = string.Empty;
+
         public string Sum
         { get; set; } = string.Empty;
+
         public string Queue
         { get; set; } = string.Empty;
+
         public string Details
         { get; set; } = string.Empty;
+
         public string INN
         { get; set; } = string.Empty;
+
         public string KPP
         { get; set; } = string.Empty;
+
         public string LS
         { get; set; } = string.Empty;
+
         public string BIC
             => Program.OurBIC;
+
         public string KS
             => Program.OurKS;
+
         public string Name2
         { get; set; } = string.Empty;
+
         public string INN2
         { get; set; } = string.Empty;
+
         public string KPP2
         { get; set; } = string.Empty;
+
         public string LS2
         { get; set; } = string.Empty;
+
         public string BIC2
         { get; set; } = string.Empty;
+
         public string KS2
         { get; set; } = string.Empty;
+
         public string SS
         { get; set; } = string.Empty;
+
         public string NAL1
         { get; set; } = string.Empty;
+
         public string NAL2
         { get; set; } = string.Empty;
+
         public string NAL3
         { get; set; } = string.Empty;
+
         public string NAL4
         { get; set; } = string.Empty;
+
         public string NAL5
         { get; set; } = string.Empty;
+
         public string NAL6
         { get; set; } = string.Empty;
+
         public string NAL7
             => string.Empty;
+
         public string OpKind
         { get; set; } = string.Empty;
+
         public string PayCode
+        { get; set; } = string.Empty;
+
+        public string PurposCode
         { get; set; } = string.Empty;
 
         public PayDoc(DataRow rec)
         {
             DocNo = rec["NUMBER"].ToString().TrimStart(new char[] { '0' });
             DocDate = rec["DATE"].ToString();
+            if (rec.Table.Columns.Contains("ACCEPT_TER")) //v1.2
+            {
+                ValDate = rec["ACCEPT_TER"].ToString();
+            }
             Sum = rec["SUM"].ToString();
             Queue = rec["PAY_QUEUE"].ToString();
             Details = StripSpaces(rec["PAYMENT_AI"].ToString());
@@ -95,52 +132,53 @@ namespace ConvertFRBtoABS
             }
 
             OpKind = rec["OP_KIND"].ToString();
+            PurposCode = rec["PurposCode"].ToString();
         }
 
-        public string ExportToBankier(bool local)
-        {
-            string[] doc = new string[103];
+        //public string ExportToBankier(bool local)
+        //{
+        //    string[] doc = new string[103];
 
-            doc[1] = DMY2YMD(DocDate);
-            doc[2] = DocNo;
-            doc[3] = OpKind;
-            doc[4] = "A";
-            doc[9] = local ? "801" : "802";
-            doc[10] = "4";
-            doc[11] = "810";
-            doc[12] = Sum;
-            doc[13] = Sum;
-            doc[15] = Queue;
-            doc[19] = LS;
-            doc[23] = BIC;
-            doc[25] = LS2;
-            doc[27] = KS2;
-            doc[29] = BIC2;
-            doc[31] = Details;
-            doc[35] = Name2;
-            doc[48] = "e";
-            doc[49] = LS;
-            doc[51] = local ? string.Empty : "SM1";
-            doc[53] = OpKind.Equals("01") ? "26" : "5";
-            doc[54] = "e";
-            doc[55] = local ? LS2 : KS;
-            doc[73] = "243";
-            doc[75] = INN;
-            doc[76] = INN2;
-            doc[92] = KPP;
-            doc[93] = KPP2;
-            doc[94] = SS;
-            doc[95] = NAL1;
-            doc[96] = NAL2;
-            doc[97] = NAL3;
-            doc[98] = NAL4;
-            doc[99] = NAL5;
-            doc[100] = NAL6;
-            doc[101] = NAL7;
-            doc[102] = DateTime.Today.ToString("yyyyMMdd");
+        //    doc[1] = DMY2YMD(DocDate);
+        //    doc[2] = DocNo;
+        //    doc[3] = OpKind;
+        //    doc[4] = "A";
+        //    doc[9] = local ? "801" : "802";
+        //    doc[10] = "4";
+        //    doc[11] = "810";
+        //    doc[12] = Sum;
+        //    doc[13] = Sum;
+        //    doc[15] = Queue;
+        //    doc[19] = LS;
+        //    doc[23] = BIC;
+        //    doc[25] = LS2;
+        //    doc[27] = KS2;
+        //    doc[29] = BIC2;
+        //    doc[31] = Details;
+        //    doc[35] = Name2;
+        //    doc[48] = "e";
+        //    doc[49] = LS;
+        //    doc[51] = local ? string.Empty : "SM1";
+        //    doc[53] = OpKind.Equals("01") ? "26" : "5";
+        //    doc[54] = "e";
+        //    doc[55] = local ? LS2 : KS;
+        //    doc[73] = "243";
+        //    doc[75] = INN;
+        //    doc[76] = INN2;
+        //    doc[92] = KPP;
+        //    doc[93] = KPP2;
+        //    doc[94] = SS;
+        //    doc[95] = NAL1;
+        //    doc[96] = NAL2;
+        //    doc[97] = NAL3;
+        //    doc[98] = NAL4;
+        //    doc[99] = NAL5;
+        //    doc[100] = NAL6;
+        //    doc[101] = NAL7;
+        //    doc[102] = DateTime.Today.ToString("yyyyMMdd");
 
-            return string.Join("^", doc, 1, 102);
-        }
+        //    return string.Join("^", doc, 1, 102);
+        //}
 
         public string ExportToInversion(bool local)
         {
@@ -191,6 +229,7 @@ namespace ConvertFRBtoABS
                 doc.AppendFormat(fmt, "POKDATEDOC", NAL6);
                 doc.AppendFormat(fmt, "POKTYPEPLAT", NAL7);
                 doc.AppendFormat(fmt, "Doc_Index", PayCode);
+                doc.AppendFormat(fmt, "PurposCode", PurposCode);
             }
             else //out
             {
@@ -218,7 +257,7 @@ namespace ConvertFRBtoABS
                 doc.AppendFormat(fmt, "BO2", string.Empty);
                 doc.AppendFormat(fmt, "Date_Reg", DocDate);
                 doc.AppendFormat(fmt, "Date_Doc", DocDate);
-                doc.AppendFormat(fmt, "Date_Val", DocDate);
+                doc.AppendFormat(fmt, "Date_Val", bo1.Equals("15") ? ValDate : DocDate);
                 doc.AppendFormat(fmt, "Doc_Num", DocNo);
                 doc.AppendFormat(fmt, "Batch_Num", batch);
                 doc.AppendFormat(fmt, "Priority", Queue);
@@ -251,9 +290,11 @@ namespace ConvertFRBtoABS
                 doc.AppendFormat(fmt, "POKDATEDOC", NAL6);
                 doc.AppendFormat(fmt, "POKTYPEPLAT", NAL7);
                 doc.AppendFormat(fmt, "Doc_Index", PayCode);
+                doc.AppendFormat(fmt, "PurposCode", PurposCode);
             }
 
             doc.Append("# Doc End\n");
+
             return doc.ToString();
         }
 
@@ -263,27 +304,32 @@ namespace ConvertFRBtoABS
             {
                 s = s.Replace("  ", " ");
             }
+
             return s;
         }
 
-        private static string YMD2DMY(string s) //yyyymmdd -> dd.mm.yyyy
-        {
-            string ret = string.Empty;
-            if (s.Length == 8)
-            {
-                ret = string.Join(".", s.Substring(6, 2), s.Substring(4, 2), s.Substring(0, 4));
-            }
-            return ret;
-        }
+        //private static string YMD2DMY(string s) //yyyymmdd -> dd.mm.yyyy
+        //{
+        //    string ret = string.Empty;
 
-        private static string DMY2YMD(string s) //dd.mm.yyyy -> yyyymmdd
-        {
-            string ret = string.Empty;
-            if (s.Length == 10)
-            {
-                ret = s.Substring(6, 4) + s.Substring(3, 2) + s.Substring(0, 2);
-            }
-            return ret;
-        }
+        //    if (s.Length == 8)
+        //    {
+        //        ret = string.Join(".", s.Substring(6, 2), s.Substring(4, 2), s.Substring(0, 4));
+        //    }
+
+        //    return ret;
+        //}
+
+        //private static string DMY2YMD(string s) //dd.mm.yyyy -> yyyymmdd
+        //{
+        //    string ret = string.Empty;
+
+        //    if (s.Length == 10)
+        //    {
+        //        ret = s.Substring(6, 4) + s.Substring(3, 2) + s.Substring(0, 2);
+        //    }
+
+        //    return ret;
+        //}
     }
 }
