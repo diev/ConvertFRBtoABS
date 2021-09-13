@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System;
@@ -9,19 +9,19 @@ using System.Windows.Forms;
 
 namespace ConvertFRBtoABS
 {
-    class Verifier
+    internal class Verifier
     {
         private const int CutLength = 20;
 
-        private readonly string prompt;
-        private readonly string part;
+        private readonly string _prompt;
+        private readonly string _part;
 
         public bool Changed = false;
 
         public Verifier(string prompt, string part)
         {
-            this.prompt = prompt;
-            this.part = part;
+            this._prompt = prompt;
+            this._part = part;
         }
 
         public void Problem(ref string field, string msg)
@@ -31,12 +31,13 @@ namespace ConvertFRBtoABS
             string sfield = (field.Length > CutLength)
                 ? field.Substring(0, CutLength) + "..."
                 : (field.Length > 0)
-                ? field
-                : "-пусто-";
-            string ask = string.Format("{0} {1}", part, msg);
-            string log = string.Format("{0} \"{1}\" - {2}", part, sfield, msg);
+                    ? field
+                    : "-пусто-";
 
-            if (Lib.InputBox.Query(prompt, ask, ref field))
+            string ask = string.Format("{0} {1}", _part, msg);
+            string log = string.Format("{0} \"{1}\" - {2}", _part, sfield, msg);
+
+            if (Lib.InputBox.Query(_prompt, ask, ref field))
             {
                 if (field.Equals(field0))
                 {
@@ -47,8 +48,8 @@ namespace ConvertFRBtoABS
                     sfield = (field.Length > CutLength)
                         ? field.Substring(0, CutLength) + "..."
                         : (field.Length > 0)
-                        ? field
-                        : "-пусто-";
+                            ? field
+                            : "-пусто-";
 
                     Console.WriteLine("     Ошибка: {0} - исправлено на: {1}", ask, sfield);
                     Changed = true;
@@ -62,7 +63,7 @@ namespace ConvertFRBtoABS
                     "Выкинуть эту платежку из пакета на загрузку?\n\n" +
                     "Да - выкинуть целиком эту платежку;\n" +
                     "Нет - пропустить эту ошибку и проверять платежку дальше.",
-                    prompt, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Stop);
+                    _prompt, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Stop);
 
                 //if (result == DialogResult.OK)
                 //{
@@ -92,6 +93,7 @@ namespace ConvertFRBtoABS
             }
 
             Regex regex = new Regex(regexp);
+
             while (!regex.IsMatch(field))
             {
                 Problem(ref field, msg);
@@ -232,6 +234,7 @@ namespace ConvertFRBtoABS
             char[] tmp = stmp.ToCharArray();
 
             int sum = 0;
+
             for (int i = 1; i < tmp.Length; i++)
             {
                 switch (i % 3)
@@ -247,6 +250,7 @@ namespace ConvertFRBtoABS
                         break;
                 }
             }
+
             sum = sum * 3 % 10;
 
             string ret = string.Format("{0}{1}{2}", conto, sum, ls11);

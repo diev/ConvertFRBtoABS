@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System;
@@ -23,8 +23,30 @@ namespace Lib
     ///     foreach (DataRow Rec in DBFTable.Rows) {}
     /// </code>
     /// </example>
-    class DBF
+    internal class DBF
     {
+        // Типы полей DBF
+        private const string _C = "C";
+        private const string _L = "L";
+        private const string _D = "D";
+        private const string _N = "N";
+        private const string _F = "F";
+
+        private readonly static Type _typeC = Type.GetType("System.String");
+        private readonly static Type _typeL = Type.GetType("System.Boolean");
+        private readonly static Type _typeD = Type.GetType("System.DateTime");
+        private readonly static Type _typeN0 = Type.GetType("System.Int32");
+        private readonly static Type _typeN = Type.GetType("System.Decimal");
+        private readonly static Type _typeF = Type.GetType("System.Double");
+
+        private readonly static char[] _trim = new char[] { (char)0x00, (char)0x20 };
+
+        private readonly static DateTimeFormatInfo _dfi = new CultureInfo("en-US", false).DateTimeFormat;
+        private readonly static NumberFormatInfo _nfi = new CultureInfo("en-US", false).NumberFormat;
+
+        private readonly static Encoding _enc = Encoding.Default;
+        private readonly static Encoding _oem = Encoding.GetEncoding(866);
+
         /// <summary>
         /// Read DBF file.
         /// </summary>
@@ -38,7 +60,7 @@ namespace Lib
                 fs.Position = 4;
                 fs.Read(buffer, 0, buffer.Length);
 
-                int RowsCount = buffer[0] +
+                int rowsCount = buffer[0] +
                     (buffer[1] * 0x100) +
                     (buffer[2] * 0x10000) +
                     (buffer[3] * 0x1000000);
@@ -47,132 +69,122 @@ namespace Lib
                 fs.Position = 8;
                 fs.Read(buffer, 0, buffer.Length);
 
-                int FieldCount = (((buffer[0] + (buffer[1] * 0x100)) - 1) / 32) - 1;
+                int fieldCount = ((buffer[0] + (buffer[1] * 0x100) - 1) / 32) - 1;
 
-                string[] FieldName = new string[FieldCount]; // Массив названий полей
-                string[] FieldType = new string[FieldCount]; // Массив типов полей
+                string[] fieldName = new string[fieldCount]; // Массив названий полей
+                string[] fieldType = new string[fieldCount]; // Массив типов полей
 
-                byte[] FieldSize = new byte[FieldCount]; // Массив размеров полей
-                byte[] FieldDigs = new byte[FieldCount]; // Массив размеров дробной части
+                byte[] fieldSize = new byte[fieldCount]; // Массив размеров полей
+                byte[] fieldDigs = new byte[fieldCount]; // Массив размеров дробной части
 
-                buffer = new byte[32 * FieldCount]; // Описание полей: 32 байтa * кол-во, начиная с 33-го
+                buffer = new byte[32 * fieldCount]; // Описание полей: 32 байтa * кол-во, начиная с 33-го
                 fs.Position = 32;
                 fs.Read(buffer, 0, buffer.Length);
-                int FieldsLength = 0;
 
-                // Типы полей DBF
-                Type typeC = Type.GetType("System.String");
-                Type typeL = Type.GetType("System.Boolean");
-                Type typeD = Type.GetType("System.DateTime");
-                Type typeN0 = Type.GetType("System.Int32");
-                Type typeN = Type.GetType("System.Decimal");
-                Type typeF = Type.GetType("System.Double");
+                int fieldsLength = 0;
 
-                for (int col = 0; col < FieldCount; col++)
+                for (int col = 0; col < fieldCount; col++)
                 {
-                    // Заголовки
-                    FieldName[col] = Encoding.Default
-                        .GetString(buffer, col * 32, 10)
-                        .TrimEnd(new char[] { (char)0x00 });
-                    FieldType[col] = "" + (char)buffer[col * 32 + 11];
-                    FieldSize[col] = buffer[col * 32 + 16];
-                    FieldDigs[col] = buffer[col * 32 + 17];
+                    int pos = col * 32;
 
-                    FieldsLength += FieldSize[col];
+                    // Заголовки
+                    fieldName[col] = _enc.GetString(buffer, pos, 10).TrimEnd(_trim);
+                    fieldType[col] = string.Empty + (char)buffer[pos + 11];
+                    fieldSize[col] = buffer[pos + 16];
+                    fieldDigs[col] = buffer[pos + 17];
+
+                    fieldsLength += fieldSize[col];
 
                     // Создаю колонки
                     Type type;
-                    switch (FieldType[col])
+                    switch (fieldType[col])
                     {
-                        case "C":
-                            type = typeC;
+                        case _C:
+                            type = _typeC;
                             break;
 
-                        case "L":
-                            type = typeL;
+                        case _L:
+                            type = _typeL;
                             break;
 
-                        case "D":
-                            type = typeD;
+                        case _D:
+                            type = _typeD;
                             break;
 
-                        case "N":
-                            type = FieldDigs[col] == 0 ? typeN0 : typeN;
+                        case _N:
+                            type = fieldDigs[col] == 0
+                                ? _typeN0
+                                : _typeN;
                             break;
 
-                        case "F":
-                            type = typeF;
+                        case _F:
+                            type = _typeF;
                             break;
 
                         default:
                             throw new Exception("Неизвестный тип поля DBF");
                     }
-                    table.Columns.Add(FieldName[col], type);
+
+                    table.Columns.Add(fieldName[col], type);
                 }
+
                 fs.ReadByte(); // Пропускаю разделитель схемы и данных
-
-                DateTimeFormatInfo dfi = new CultureInfo("en-US", false).DateTimeFormat;
-                NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
-
-                buffer = new byte[FieldsLength];
+                buffer = new byte[fieldsLength];
                 table.BeginLoadData();
 
-                for (int row = 0; row < RowsCount; row++)
+                for (int row = 0; row < rowsCount; row++)
                 {
                     fs.ReadByte(); // Пропускаю стартовый байт элемента данных
                     fs.Read(buffer, 0, buffer.Length);
-                    DataRow R = table.NewRow();
-                    int Index = 0;
+                    DataRow dataRow = table.NewRow();
+                    int index = 0;
 
-                    for (int col = 0; col < FieldCount; col++)
+                    for (int col = 0; col < fieldCount; col++)
                     {
-                        string value = Encoding.GetEncoding(866)
-                            .GetString(buffer, Index, FieldSize[col])
-                            .TrimEnd(new char[] { (char)0x00 })
-                            .TrimEnd(new char[] { (char)0x20 });
-
-                        Index += FieldSize[col];
+                        string value = _oem.GetString(buffer, index, fieldSize[col]).TrimEnd(_trim);
+                        index += fieldSize[col];
 
                         if (string.IsNullOrEmpty(value))
                         {
-                            R[col] = DBNull.Value;
+                            dataRow[col] = DBNull.Value;
+                            continue;
                         }
-                        else
-                        { 
-                            switch (FieldType[col])
-                            {
-                                case "L":
-                                    R[col] = value.Equals("T"); // ? true : false;
-                                    break;
 
-                                case "D":
-                                    R[col] = DateTime.ParseExact(value, "yyyyMMdd", dfi);
-                                    break;
+                        switch (fieldType[col])
+                        {
+                            case _L:
+                                dataRow[col] = value == "T"; // ? true : false;
+                                break;
 
-                                case "N":
-                                    if (FieldDigs[col] == 0)
-                                    {
-                                        R[col] = int.Parse(value, nfi);
-                                    }
-                                    else
-                                    {
-                                        R[col] = decimal.Parse(value, nfi);
-                                    }
-                                    break;
+                            case _D:
+                                dataRow[col] = DateTime.ParseExact(value, "yyyyMMdd", _dfi);
+                                break;
 
-                                case "F":
-                                    R[col] = double.Parse(value, nfi);
-                                    break;
+                            case _N:
+                                if (fieldDigs[col] == 0)
+                                {
+                                    dataRow[col] = int.Parse(value, _nfi);
+                                }
+                                else
+                                {
+                                    dataRow[col] = decimal.Parse(value, _nfi);
+                                }
+                                break;
 
-                                default:
-                                    R[col] = value;
-                                    break;
-                            }
+                            case _F:
+                                dataRow[col] = double.Parse(value, _nfi);
+                                break;
+
+                            default:
+                                dataRow[col] = value;
+                                break;
                         }
                     }
-                    table.Rows.Add(R);
+
+                    table.Rows.Add(dataRow);
                     //Application.DoEvents();
                 }
+
                 table.EndLoadData();
                 fs.Close();
             }

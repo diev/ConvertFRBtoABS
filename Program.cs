@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System;
@@ -10,33 +10,35 @@ using System.Windows.Forms;
 
 namespace ConvertFRBtoABS
 {
-    class Program
+    internal class Program
     {
         #region Init
-        public static string SourcePath = Properties.Settings.Default.SourcePath;
-        public static string SourceMask = Properties.Settings.Default.SourceMask;
-        public static string LogFile = Properties.Settings.Default.LogFile;
-        public static string FileInversionMO = Properties.Settings.Default.FileInversionMO;
-        public static string FileInversionOut = Properties.Settings.Default.FileInversionOut;
-        public static string FileInversionLoc = Properties.Settings.Default.FileInversionLoc;
-        public static string InversionFormat = Properties.Settings.Default.InversionFormat + "\n";
-        //string static string FileBankier = Properties.Settings.Default.FileBankier;
+        private readonly static string _sourcePath = Properties.Settings.Default.SourcePath;
+        private readonly static string _sourceMask = Properties.Settings.Default.SourceMask;
+
+        //private readonly static string _fileInversionMO = Properties.Settings.Default.FileInversionMO;
+        private readonly static string _fileInversionOut = Properties.Settings.Default.FileInversionOut;
+        private readonly static string _fileInversionLoc = Properties.Settings.Default.FileInversionLoc;
+
+        //private readonly static string _fileBankier = Properties.Settings.Default.FileBankier;
 
         public const string OurBIC = "044030702";
         public const string OurKS = "30101810600000000702";
         public const string OurINN = "7831001422";
         public const string OurName = "АО \"Сити Инвест Банк\"";
 
-        public static Encoding FileEnc = Encoding.GetEncoding(866);
+        public readonly static string InversionFormat = Properties.Settings.Default.InversionFormat + "\n";
+        public readonly static string LogFile = Properties.Settings.Default.LogFile;
+        public readonly static Encoding FileEnc = Encoding.GetEncoding(866);
 
         public static bool AbortDoc = false;
         #endregion
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             int cnt = 0;
 
-            foreach (string filename in Directory.GetFiles(SourcePath, SourceMask))
+            foreach (string filename in Directory.GetFiles(_sourcePath, _sourceMask))
             {
                 if (AbortDoc)
                 {
@@ -584,18 +586,18 @@ namespace ConvertFRBtoABS
                     #region Bankier
                     //Банкир
                     //string bankier = doc.ExportToBankier(local) + '\n';
-                    //File.AppendAllText(FileBankier, bankier, FileEnc);
+                    //File.AppendAllText(_fileBankier, bankier, FileEnc);
                     #endregion
 
                     #region Inversia
                     //Инверсия
                     string inv = doc.ExportToInversion(local);
-                    File.AppendAllText(local ? FileInversionLoc : FileInversionOut, inv, FileEnc);
+                    File.AppendAllText(local ? _fileInversionLoc : _fileInversionOut, inv, FileEnc);
                     #endregion
                 }
 
-                //string bak = Path.Combine(SourcePath, string.Format(@"BAK\{0:yyyy}\{0:MM}\{0:dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
-                string bak = Path.Combine(SourcePath, string.Format(@"BAK\{0:yyyy-MM-dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
+                //string bak = Path.Combine(_sourcePath, string.Format(@"BAK\{0:yyyy}\{0:MM}\{0:dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
+                string bak = Path.Combine(_sourcePath, string.Format(@"BAK\{0:yyyy-MM-dd}\{0:HHmm}{1}", DateTime.Now, Path.GetFileName(filename)));
                 string path = Path.GetDirectoryName(bak);
 
                 if (!Directory.Exists(path))

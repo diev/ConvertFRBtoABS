@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System.Reflection;
@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cibank")]
 [assembly: AssemblyProduct("ConvertFRBtoABS")]
-[assembly: AssemblyCopyright("Copyright © 2013-2020 Dmitrii Evdokimov")]
+[assembly: AssemblyCopyright("Copyright © 2013-2021 Dmitrii Evdokimov")]
 [assembly: AssemblyTrademark("Дмитрий Евдокимов")]
 [assembly: AssemblyCulture("")]
 
@@ -35,6 +35,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.2.0.0")]
-[assembly: AssemblyFileVersion("6.2.0.0")]
+[assembly: AssemblyVersion("6.2.2.0")]
+[assembly: AssemblyFileVersion("6.2.2.0")]
 [assembly: NeutralResourcesLanguage("ru")]

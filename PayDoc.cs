@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System.Data;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ConvertFRBtoABS
 {
-    class PayDoc
+    internal class PayDoc
     {
         public string DocNo
         { get; set; } = string.Empty;
@@ -96,10 +96,12 @@ namespace ConvertFRBtoABS
         {
             DocNo = rec["NUMBER"].ToString().TrimStart(new char[] { '0' });
             DocDate = rec["DATE"].ToString();
+
             if (rec.Table.Columns.Contains("ACCEPT_TER")) //v1.2
             {
                 ValDate = rec["ACCEPT_TER"].ToString();
             }
+
             Sum = rec["SUM"].ToString();
             Queue = rec["PAY_QUEUE"].ToString();
             Details = StripSpaces(rec["PAYMENT_AI"].ToString());

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2020 Dmitrii Evdokimov. All rights reserved.
+﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 using System;
@@ -15,10 +15,10 @@ namespace Lib
     /// </remarks>
     public class InputBox : Form
     {
-        private readonly Label label;
-        private readonly TextBox textValue;
-        private readonly Button buttonOK;
-        private readonly Button buttonCancel;
+        private readonly Label _label;
+        private readonly TextBox _textValue;
+        private readonly Button _buttonOK;
+        private readonly Button _buttonCancel;
 
         /// <summary>
         /// Handmade form created in code.
@@ -27,52 +27,52 @@ namespace Lib
         /// <param name="Text">Text to show.</param>
         private InputBox(string Caption, string Text)
         {
-            label = new Label();
-            textValue = new TextBox();
-            buttonOK = new Button();
-            buttonCancel = new Button();
+            _label = new Label();
+            _textValue = new TextBox();
+            _buttonOK = new Button();
+            _buttonCancel = new Button();
 
             SuspendLayout();
 
-            label.AutoSize = true;
-            label.Location = new Point(9, 13);
-            label.Name = "label";
-            label.Size = new Size(31, 13);
-            label.TabIndex = 1;
-            label.Text = Text;
+            _label.AutoSize = true;
+            _label.Location = new Point(9, 13);
+            _label.Name = "label";
+            _label.Size = new Size(31, 13);
+            _label.TabIndex = 1;
+            _label.Text = Text;
 
-            textValue.Location = new Point(12, 31);
-            textValue.Name = "textValue";
-            textValue.Size = new Size(245, 20);
-            textValue.TabIndex = 2;
-            textValue.WordWrap = false;
+            _textValue.Location = new Point(12, 31);
+            _textValue.Name = "textValue";
+            _textValue.Size = new Size(245, 20);
+            _textValue.TabIndex = 2;
+            _textValue.WordWrap = false;
 
-            buttonOK.DialogResult = DialogResult.OK;
-            buttonOK.Location = new Point(57, 67);
-            buttonOK.Name = "buttonOK";
-            buttonOK.Size = new Size(75, 23);
-            buttonOK.TabIndex = 3;
-            buttonOK.Text = "OK";
-            buttonOK.UseVisualStyleBackColor = true;
+            _buttonOK.DialogResult = DialogResult.OK;
+            _buttonOK.Location = new Point(57, 67);
+            _buttonOK.Name = "buttonOK";
+            _buttonOK.Size = new Size(75, 23);
+            _buttonOK.TabIndex = 3;
+            _buttonOK.Text = "OK";
+            _buttonOK.UseVisualStyleBackColor = true;
 
-            buttonCancel.DialogResult = DialogResult.Cancel;
-            buttonCancel.Location = new Point(138, 67);
-            buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(75, 23);
-            buttonCancel.TabIndex = 4;
-            buttonCancel.Text = "Отмена"; //"Cancel";
-            buttonCancel.UseVisualStyleBackColor = true;
+            _buttonCancel.DialogResult = DialogResult.Cancel;
+            _buttonCancel.Location = new Point(138, 67);
+            _buttonCancel.Name = "buttonCancel";
+            _buttonCancel.Size = new Size(75, 23);
+            _buttonCancel.TabIndex = 4;
+            _buttonCancel.Text = "Отмена"; //"Cancel";
+            _buttonCancel.UseVisualStyleBackColor = true;
 
-            AcceptButton = buttonOK;
+            AcceptButton = _buttonOK;
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = buttonCancel;
+            CancelButton = _buttonCancel;
             ClientSize = new Size(270, 103);
 
-            Controls.Add(buttonCancel);
-            Controls.Add(buttonOK);
-            Controls.Add(textValue);
-            Controls.Add(label);
+            Controls.Add(_buttonCancel);
+            Controls.Add(_buttonOK);
+            Controls.Add(_textValue);
+            Controls.Add(_label);
 
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -106,14 +106,14 @@ namespace Lib
         public static bool Query(string Caption, string Text, ref string s_val)
         {
             InputBox ib = new InputBox(Caption, Text);
-            ib.textValue.Text = s_val;
+            ib._textValue.Text = s_val;
 
             if (ib.ShowDialog() != DialogResult.OK)
             {
                 return false;
             }
 
-            s_val = ib.textValue.Text.Trim();
+            s_val = ib._textValue.Text.Trim();
 
             return true;
         }
