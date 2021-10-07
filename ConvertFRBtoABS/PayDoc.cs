@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ConvertFRBtoABS
 {
-    internal class PayDoc
+    public class PayDoc
     {
         public string DocNo
         { get; set; } = string.Empty;
@@ -91,6 +91,9 @@ namespace ConvertFRBtoABS
 
         public string PurposCode
         { get; set; } = string.Empty;
+
+        public PayDoc() // for Tests
+        { }
 
         public PayDoc(DataRow rec)
         {

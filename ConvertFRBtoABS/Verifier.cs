@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ConvertFRBtoABS
 {
-    internal class Verifier
+    public class Verifier
     {
         private const int CutLength = 20;
 
@@ -218,8 +218,13 @@ namespace ConvertFRBtoABS
             return Changed;
         }
 
-        private bool LSKey(string ls, string bic, string ks)
+        public bool LSKey(string ls, string bic, string ks)
         {
+            if (bic.StartsWith("01")) //unknown rule since 2021
+            {
+                return true;
+            }
+
             string bic3 = bic.Substring(bic.Length - 3); //КО
 
             if (string.IsNullOrEmpty(ks))
