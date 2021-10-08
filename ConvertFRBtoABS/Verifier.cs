@@ -1,5 +1,19 @@
-﻿// Copyright (c) 2013-2021 Dmitrii Evdokimov. All rights reserved.
-// Licensed under the Apache License, Version 2.0.
+﻿#region License
+//------------------------------------------------------------------------------
+// Copyright (c) Dmitrii Evdokimov 2013-2021
+// Source https://github.com/diev/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//------------------------------------------------------------------------------
+#endregion
 
 using System;
 using System.Globalization;
@@ -220,16 +234,16 @@ namespace ConvertFRBtoABS
 
         public bool LSKey(string ls, string bic, string ks)
         {
-            if (bic.StartsWith("01")) //unknown rule since 2021
-            {
-                return true;
-            }
-
             string bic3 = bic.Substring(bic.Length - 3); //КО
 
-            if (string.IsNullOrEmpty(ks))
+            if (string.IsNullOrEmpty(ks) || bic.StartsWith("01"))
             {
                 bic3 = "0" + bic.Substring(bic.Length - 5, 2); //РКЦ
+
+                if (bic.StartsWith("01"))
+                {
+                    ls = ks; //swap ls with ks
+                }
             }
 
             string conto = ls.Substring(0, 8); //40702810*00000000123
