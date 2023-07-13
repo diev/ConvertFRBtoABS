@@ -1,6 +1,6 @@
 ﻿#region License
 //------------------------------------------------------------------------------
-// Copyright (c) Dmitrii Evdokimov 2013-2021
+// Copyright (c) Dmitrii Evdokimov 2013-2023
 // Source https://github.com/diev/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,7 @@ namespace ConvertFRBtoABS
 
         public readonly static string InversionFormat = Properties.Settings.Default.InversionFormat + "\n";
         public readonly static string LogFile = Properties.Settings.Default.LogFile;
-        public readonly static Encoding FileEnc = Encoding.GetEncoding(866);
+        public readonly static Encoding FileEnc = Encoding.GetEncoding(Properties.Settings.Default.InversionEncoding);
 
         public static bool AbortDoc = false;
         #endregion
@@ -187,8 +187,9 @@ namespace ConvertFRBtoABS
                     {
                         Verifier ver = new Verifier(prompt + "7", "Сумма");
                         string test = doc.Sum;
+                        decimal n;
 
-                        while (!decimal.TryParse(test, NumberStyles.AllowDecimalPoint, nfi, result: out decimal n))
+                        while (!decimal.TryParse(test, NumberStyles.AllowDecimalPoint, nfi, result: out n))
                         {
                             ver.Problem(ref test, "не сумма");
                         }

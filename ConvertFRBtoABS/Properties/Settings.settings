@@ -44,12 +44,6 @@
     <Setting Name="REGEXP_KPP" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^(\d{9}|0)$~не 9 цифр или 0</Value>
     </Setting>
-    <Setting Name="REGEXP_BIC" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^04\d{7}$~не 9 цифр с 04 в начале</Value>
-    </Setting>
-    <Setting Name="REGEXP_LS" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^\d{5}810\d{12}$~не рублевый счет из 20 цифр</Value>
-    </Setting>
     <Setting Name="REGEXP_SS" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^\d{2}$~не 2 цифры</Value>
     </Setting>
@@ -62,14 +56,8 @@
     <Setting Name="REGEXP_NAL3" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^(ТП|ЗД|БФ|ТР|РС|ОТ|РТ|ВУ|ПР|АП|АР|ДЕ|ПО|КВ|КТ|ИД|ИП|ТУ|БД|ИН|КП|ДК|ПК|КК|ТК|0)$~не входит в перечень, или 0</Value>
     </Setting>
-    <Setting Name="REGEXP_NAL4" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^((((Д1|Д2|Д3|МС|[0-3]\d{1})\.(0[1-9]|1[0-2]))|((КВ\.0[1-4]|ПЛ\.0[1-2]|ГД\.00)))\.201\d{1}|0)$~не входит в перечень или не дата, или 0</Value>
-    </Setting>
     <Setting Name="REGEXP_NAL5" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^.{1,15}$~не от 1 до 15 знаков, или 0</Value>
-    </Setting>
-    <Setting Name="REGEXP_NAL6" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^([0-3]\d{1}\.(0[1-9]|1[0-2])\.201\d{1}|0)$~не дата или 0</Value>
     </Setting>
     <Setting Name="FileInversionLoc" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\out_int.inv</Value>
@@ -77,14 +65,29 @@
     <Setting Name="REGEXP_QUE" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^[1-5]$~не 1..5</Value>
     </Setting>
-    <Setting Name="REGEXP_UIN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^(\d{20}|\d{25}|0)$~не 20 или 25 цифр, или 0</Value>
-    </Setting>
     <Setting Name="REGEXP_N" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^\d{1,6}$~не число до 6 цифр</Value>
     </Setting>
+    <Setting Name="REGEXP_BIC" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(04|01)\d{7}$~не 9 цифр с 04 или 01 в начале</Value>
+    </Setting>
+    <Setting Name="REGEXP_LS" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^\d{5}(810|643)\d{12}$~не рублевый счет из 20 цифр</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL4" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^((((Д1|Д2|Д3|МС|[0-3]\d)\.(0[1-9]|1[0-2]))|((КВ\.0[1-4]|ПЛ\.0[1-2]|ГД\.00)))\.201\d|0)$~не входит в перечень или не дата, или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_NAL6" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^([0-3]\d\.(0[1-9]|1[0-2])\.201\d|0)$~не дата или 0</Value>
+    </Setting>
+    <Setting Name="REGEXP_UIN" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^(\d{4}|\d{20}|\d{25}|0)$~не 4, 20 или 25 цифр, или 0</Value>
+    </Setting>
     <Setting Name="REGEXP_PURPOSCODE" GenerateDefaultValueInCode="false" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^\(|1|2|3)$~не число 1, 2, 3 или пусто</Value>
+      <Value Profile="(Default)">^(|1|2|3)$~не число 1, 2, 3 или пусто</Value>
+    </Setting>
+    <Setting Name="InversionEncoding" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1251</Value>
     </Setting>
   </Settings>
 </SettingsFile>

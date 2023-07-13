@@ -1,6 +1,6 @@
 ﻿#region License
 //------------------------------------------------------------------------------
-// Copyright (c) Dmitrii Evdokimov 2013-2021
+// Copyright (c) Dmitrii Evdokimov 2013-2023
 // Source https://github.com/diev/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");

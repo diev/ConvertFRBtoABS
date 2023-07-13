@@ -1,6 +1,6 @@
 ﻿#region License
 //------------------------------------------------------------------------------
-// Copyright (c) Dmitrii Evdokimov 2013-2021
+// Copyright (c) Dmitrii Evdokimov 2013-2023
 // Source https://github.com/diev/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("diev")]
 [assembly: AssemblyProduct("ConvertFRBtoABS")]
-[assembly: AssemblyCopyright("Copyright © Dmitrii Evdokimov 2013-2021")]
+[assembly: AssemblyCopyright("Copyright © Dmitrii Evdokimov 2013-2023")]
 [assembly: AssemblyTrademark("Дмитрий Евдокимов")]
 [assembly: AssemblyCulture("")]
 
@@ -49,6 +49,6 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.3.1.0")]
-[assembly: AssemblyFileVersion("6.3.1.0")]
+[assembly: AssemblyVersion("6.4.0.0")]
+[assembly: AssemblyFileVersion("6.4.0.0")]
 [assembly: NeutralResourcesLanguage("ru")]

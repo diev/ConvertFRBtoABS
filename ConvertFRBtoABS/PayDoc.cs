@@ -1,6 +1,6 @@
 ﻿#region License
 //------------------------------------------------------------------------------
-// Copyright (c) Dmitrii Evdokimov 2013-2021
+// Copyright (c) Dmitrii Evdokimov 2013-2023
 // Source https://github.com/diev/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,91 +23,93 @@ namespace ConvertFRBtoABS
     public class PayDoc
     {
         public string DocNo
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string DocDate
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string ValDate //v1.2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string Sum
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string Queue
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string Details
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string INN
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string KPP
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string LS
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string BIC
-            => Program.OurBIC;
+        { get; set; }
 
         public string KS
-            => Program.OurKS;
+        { get; set; }
 
         public string Name2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string INN2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string KPP2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string LS2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string BIC2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string KS2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string SS
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL1
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL2
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL3
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL4
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL5
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL6
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string NAL7
-            => string.Empty;
+        { get; set; }
 
         public string OpKind
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string PayCode
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public string PurposCode
-        { get; set; } = string.Empty;
+        { get; set; }
 
         public PayDoc() // for Tests
-        { }
+        {
+            Init();
+        }
 
         public PayDoc(DataRow rec)
         {
@@ -152,6 +154,38 @@ namespace ConvertFRBtoABS
 
             OpKind = rec["OP_KIND"].ToString();
             PurposCode = rec["PurposCode"].ToString();
+        }
+
+        private void Init()
+        {
+            DocNo = string.Empty;
+            DocDate = string.Empty;
+            ValDate = string.Empty;
+            Sum = string.Empty;
+            Queue = string.Empty;
+            Details = string.Empty;
+            INN = string.Empty;
+            KPP = string.Empty;
+            LS = string.Empty;
+            BIC = Program.OurBIC;
+            KS = Program.OurKS;
+            Name2 = string.Empty;
+            INN2 = string.Empty;
+            KPP2 = string.Empty;
+            LS2 = string.Empty;
+            BIC2 = string.Empty;
+            KS2 = string.Empty;
+            SS = string.Empty;
+            NAL1 = string.Empty;
+            NAL2 = string.Empty;
+            NAL3 = string.Empty;
+            NAL4 = string.Empty;
+            NAL5 = string.Empty;
+            NAL6 = string.Empty;
+            NAL7 = string.Empty;
+            OpKind = string.Empty;
+            PayCode = string.Empty;
+            PurposCode = string.Empty;
         }
 
         //public string ExportToBankier(bool local)

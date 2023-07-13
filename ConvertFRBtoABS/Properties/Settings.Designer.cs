@@ -12,7 +12,7 @@ namespace ConvertFRBtoABS.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -137,22 +137,6 @@ namespace ConvertFRBtoABS.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string REGEXP_BIC {
-            get {
-                return ((string)(this["REGEXP_BIC"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string REGEXP_LS {
-            get {
-                return ((string)(this["REGEXP_LS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public string REGEXP_SS {
             get {
                 return ((string)(this["REGEXP_SS"]));
@@ -185,25 +169,9 @@ namespace ConvertFRBtoABS.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string REGEXP_NAL4 {
-            get {
-                return ((string)(this["REGEXP_NAL4"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public string REGEXP_NAL5 {
             get {
                 return ((string)(this["REGEXP_NAL5"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string REGEXP_NAL6 {
-            get {
-                return ((string)(this["REGEXP_NAL6"]));
             }
         }
         
@@ -225,14 +193,6 @@ namespace ConvertFRBtoABS.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string REGEXP_UIN {
-            get {
-                return ((string)(this["REGEXP_UIN"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public string REGEXP_N {
             get {
                 return ((string)(this["REGEXP_N"]));
@@ -241,9 +201,58 @@ namespace ConvertFRBtoABS.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string REGEXP_BIC {
+            get {
+                return ((string)(this["REGEXP_BIC"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string REGEXP_LS {
+            get {
+                return ((string)(this["REGEXP_LS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string REGEXP_NAL4 {
+            get {
+                return ((string)(this["REGEXP_NAL4"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string REGEXP_NAL6 {
+            get {
+                return ((string)(this["REGEXP_NAL6"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string REGEXP_UIN {
+            get {
+                return ((string)(this["REGEXP_UIN"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public string REGEXP_PURPOSCODE {
             get {
                 return ((string)(this["REGEXP_PURPOSCODE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1251")]
+        public string InversionEncoding {
+            get {
+                return ((string)(this["InversionEncoding"]));
             }
         }
     }
